@@ -1,3 +1,5 @@
-local contemplate = require('contemplate')
+local has_telescope = pcall(require, 'telescope')
 
-vim.api.nvim_create_user_command('Contemplate', function() contemplate.open_contemplate_picker() end, { force = true })
+if has_telescope then
+  vim.api.nvim_create_user_command('Contemplate', 'Telescope contemplate', { force = true })
+end
