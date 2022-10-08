@@ -22,3 +22,8 @@ use {
     },
 
 ```
+
+## TODO
+- Option: create temp file
+- Option: auto load template files in specified directory
+- Option: specify templates folder
