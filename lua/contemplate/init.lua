@@ -61,9 +61,13 @@ end
 
 M.entries = {}
 
+function M.add_to_entries(entries)
+	vim.list_extend(M.entries, entries)
+end
+
 function M.setup(opts)
 	if opts.entries ~= nil and type(opts.entries) == "table" then
-		M.entries = opts.entries
+		M.add_to_entries(opts.entries)
 	end
 end
 
