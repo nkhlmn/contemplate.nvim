@@ -3,17 +3,20 @@ local has_telescope, telescope = pcall(require, "telescope")
 
 -- Initialize a default set of entries
 local default_entries = {
-  { "scratch.js", "JS scratchpad" },
-  { "javascript", "Javascript" },
-  { "typescript", "Typescript" },
-  { "lua", "Lua" },
-  { "markdown", "Markdown" },
-  { "python", "Python" },
-  { "json", "JSON" },
-  { "yaml", "YAML" },
+  { "scratch.js", display_name = "JS scratchpad" },
+  { "javascript", display_name = "Javascript" },
+  { "typescript", display_name = "Typescript" },
+  { "lua", display_name = "Lua" },
+  { "markdown", display_name = "Markdown" },
+  { "python", display_name = "Python" },
+  { "json", display_name = "JSON" },
+  { "yaml", display_name = "YAML" },
 }
 
 contemplate.add_to_entries(default_entries)
+contemplate.save_file = true
+contemplate.templates_folder = vim.fn.stdpath('config')..'/templates/'
+contemplate.temp_folder = '~/development/sandbox/'
 
 
 -- Create `Contemplate` command
