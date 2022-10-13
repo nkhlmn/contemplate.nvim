@@ -10,10 +10,11 @@ use {
       config = function()
         require('contemplate').setup({
           -- add custom entries
+          temp_folder = '~/', -- specify location where files will be saved
+          save_file = true, -- save file automatically
           entries = {
-            'foo.lua',                         -- can be the name of a file template in ${stdpath('config')}/templates/
-            'toml',                            -- or can be the name of the filetype for an empty buffer
-            { 'scratch.js', 'JS scratchpad' }, -- you can also provide a list; the second item will be the display name used in telescope
+            { arg = 'scratch.js', display_name 'JS scratchpad' }, -- define entries; arg can be a filename in the templates folder or a file extension
+            { arg = 'lua', display_name 'Lua' }, -- define entries; arg can be a filename in the templates folder or a file extension
           },
         })
       end,
