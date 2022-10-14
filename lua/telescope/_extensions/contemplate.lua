@@ -1,4 +1,4 @@
-local contemplate = require('contemplate')
+local contemplate = require("contemplate")
 
 local function entry_maker(entry)
 	if type(entry) == "string" then
@@ -75,6 +75,6 @@ local function open_contemplate_picker(results, opts)
 	picker:find()
 end
 
-return require('telescope').register_extension {
-  exports = { contemplate = open_contemplate_picker },
-}
+return require("telescope").register_extension({
+	exports = { contemplate = open_contemplate_picker },
+})
