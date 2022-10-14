@@ -4,7 +4,8 @@ local function entry_maker(entry)
 	if type(entry) == "string" then
 		return { value = entry, display = entry, ordinal = entry }
 	elseif type(entry) == "table" then
-		return { value = entry, display = entry.display_name, ordinal = entry.display_name }
+		local display = entry.display_name or entry.arg
+		return { value = entry, display = display, ordinal = display }
 	end
 end
 
