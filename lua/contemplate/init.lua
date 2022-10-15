@@ -13,6 +13,7 @@ function M.create_contemplate_win(entry, opts)
 	local arg = entry.arg
 	local display_name = entry.display_name
 	local name = entry.name
+  local is_filename = utils.is_filename(arg)
 
 	-- Determine where to open the window
 	if opts.split == "h" then
@@ -29,7 +30,7 @@ function M.create_contemplate_win(entry, opts)
 
 	-- Generate the filename
 	local filename_opts = {}
-	if utils.is_filename(arg) then
+	if is_filename then
 		filename_opts.filename = arg
 	else
 		filename_opts.file_extension = arg
@@ -47,20 +48,30 @@ function M.create_contemplate_win(entry, opts)
 	-- Open the new file
 	local file_path = M.temp_folder .. temp_filename
 	vim.cmd.edit(file_path)
+  local buf = vim.api.nvim_get_current_buf()
+  local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
 
 	-- Insert the contents of the template, if provided, into the new file
-	if utils.is_filename(arg) then
-		local buf = vim.api.nvim_get_current_buf()
+	if is_filename then
 		local template_path = M.templates_folder .. arg
 		local lines = utils.get_file_lines(template_path)
 		vim.api.nvim_buf_set_lines(buf, 0, 0, false, lines)
 		vim.api.nvim_win_set_cursor(0, { 1, 0 })
+  elseif filetype == 'sh' then
+    -- Insert shebang for shell scripts
+    vim.api.nvim_buf_set_lines(buf, 0, 0, false, { '#!/bin/sh' })
 	end
 
 	-- Save the buffer
 	if M.save_file then
 		vim.cmd.write()
+
+    -- Make file executable if it's a shell script
+    if filetype == 'sh' and not is_filename then
+      vim.cmd('!chmod +x ' .. file_path)
+    end
 	end
+
 end
 
 function M.add_to_entries(entries)

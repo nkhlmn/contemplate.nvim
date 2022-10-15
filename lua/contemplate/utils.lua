@@ -27,7 +27,7 @@ function M.get_file_lines(file_path)
 end
 
 function M.is_filename(arg)
-	return arg:match("%.%a+$")
+	return arg:match("%.%a+$") ~= nil
 end
 
 function M.get_timestamp_prefix()
