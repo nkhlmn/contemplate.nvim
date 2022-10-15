@@ -4,12 +4,12 @@ local has_telescope, telescope = pcall(require, "telescope")
 -- Initialize a default set of entries
 local default_entries = {
   { arg = "js", display_name = "Javascript" },
-  { arg = "ts", display_name = "Typescript" },
+  { arg = "go", display_name = "Go" },
   { arg = "lua", display_name = "Lua" },
   { arg = "md", display_name = "Markdown" },
-  { arg = "py", display_name = "Python" },
+  { arg = "sql", display_name = "SQL" },
   { arg = "json", display_name = "JSON" },
-  { arg = "yaml", display_name = "YAML" },
+  { arg = "sh", display_name = "Shell" },
 }
 
 contemplate.add_to_entries(default_entries)
