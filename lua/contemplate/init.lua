@@ -46,7 +46,7 @@ function M.create_contemplate_win(entry, opts)
 	local temp_filename = utils.get_temp_filename(filename_opts)
 
 	-- Open the new file
-	local file_path = M.temp_folder .. temp_filename
+	local file_path = M.temp_folder .. '/' .. temp_filename
 	vim.cmd.edit(file_path)
   local buf = vim.api.nvim_get_current_buf()
   local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
@@ -75,21 +75,19 @@ function M.create_contemplate_win(entry, opts)
 end
 
 function M.add_to_entries(entries)
-	vim.list_extend(M.entries, entries)
+  if type(entries) == "table" then
+    M.entries = vim.list_extend(entries, M.entries)
+  end
 end
 
 function M.setup(opts)
-	if opts.entries ~= nil and type(opts.entries) == "table" then
-		M.add_to_entries(opts.entries)
-	end
-
-	if opts.temp_folder ~= nil then
-		M.temp_folder = opts.temp_folder
-	end
-
-	if opts.save_file ~= nil then
-		M.save_file = opts.save_file
-	end
+  for key, value in pairs(opts) do
+    if key == 'entries' then
+      M.add_to_entries(value)
+    else
+      M[key] = value
+    end
+  end
 end
 
 return M

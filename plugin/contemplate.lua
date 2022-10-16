@@ -12,6 +12,7 @@ local default_entries = {
   { arg = "sh", display_name = "Shell" },
 }
 
+contemplate.entries = {}
 contemplate.add_to_entries(default_entries)
 
 -- Create `Contemplate` command
