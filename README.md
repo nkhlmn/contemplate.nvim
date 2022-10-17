@@ -1,5 +1,7 @@
 # contemplate.nvim
 
+## :exclamation: :exclamation: :exclamation: WIP :exclamation: :exclamation: :exclamation:
+
 Quickly select and open a new buffer based on a file template or a filetype
 
 ## Installation
@@ -9,17 +11,20 @@ use {
       'nkhlmn/contemplate.nvim',
       config = function()
         require('contemplate').setup({
-          -- add custom entries
-          temp_folder = '~/', -- specify location where files will be saved
-          save_file = true, -- save file automatically
+          -- specify location where files will be saved
+          temp_folder = '~/', 
+
+          -- save file automatically
+          save_file = true,
+
+          -- define entries 
           entries = {
-            { arg = 'scratch.js', display_name 'JS scratchpad' }, -- define entries; arg can be a filename in the templates folder or a file extension
-            { arg = 'lua', display_name 'Lua' }, -- define entries; arg can be a filename in the templates folder or a file extension
+            { arg = 'scratch.js', display_name 'JS scratchpad' } -- arg can be a filename in the templates folder or a file extension
+            { arg = 'lua', display_name 'Lua' },
           },
         })
       end,
     }
-
 ```
 
 ### (optional) Telescope support
@@ -40,7 +45,8 @@ If you have telescope installed you can also open the picker by calling `:Telesc
 
 ## TODO
 
-- create temp file
-- support specifying temp file location (per template?)
-- auto load template files in templates directory
+- support specifying autosave file location (per template?)
+- auto load template files in templates directory?
 - support specifying templates folder location
+- option to clear default entries
+  - alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
