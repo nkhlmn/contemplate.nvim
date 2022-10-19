@@ -43,20 +43,23 @@ function M.create_contemplate_win(entry, opts)
 	if name ~= nil then
 		filename_opts.name = name
 	end
+
 	local temp_filename = utils.get_temp_filename(filename_opts)
 
 	-- Open the new file
-	local file_path = M.temp_folder .. '/' .. temp_filename
+  local file_folder = entry.folder or M.temp_folder
+	local file_path = file_folder .. '/' .. temp_filename
 	vim.cmd.edit(file_path)
   local buf = vim.api.nvim_get_current_buf()
   local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
 
-	-- Insert the contents of the template, if provided, into the new file
+	-- Template file was provided; insert it's contents into the new buf
 	if is_filename then
 		local template_path = M.templates_folder .. arg
 		local lines = utils.get_file_lines(template_path)
 		vim.api.nvim_buf_set_lines(buf, 0, 0, false, lines)
 		vim.api.nvim_win_set_cursor(0, { 1, 0 })
+  -- Template was not provided; do special handling for certain filetypes
   elseif filetype == 'sh' then
     -- Insert shebang for shell scripts
     vim.api.nvim_buf_set_lines(buf, 0, 0, false, { '#!/bin/sh' })
@@ -71,7 +74,6 @@ function M.create_contemplate_win(entry, opts)
       vim.cmd('!chmod +x ' .. file_path)
     end
 	end
-
 end
 
 function M.add_to_entries(entries)
