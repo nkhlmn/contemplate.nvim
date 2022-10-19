@@ -1,6 +1,6 @@
 # contemplate.nvim
 
-## :exclamation: :exclamation: :exclamation: WIP :exclamation: :exclamation: :exclamation:
+## :exclamation::exclamation::exclamation: WIP :exclamation::exclamation::exclamation:
 
 Quickly select and open a new buffer based on a file template or a filetype
 
@@ -19,8 +19,8 @@ use {
 
           -- define entries 
           entries = {
-            { arg = 'scratch.js', display_name 'JS scratchpad' } -- arg can be a filename in the templates folder or a file extension
-            { arg = 'lua', display_name 'Lua' },
+            { arg = 'scratch.js', display_name = 'JS scratchpad' } -- `arg` is required; it can be a filename in the templates folder, or a file extension
+            { arg = 'lua', folder = '~/development/sandbox/lua/'}, -- `folder` overrides the global temp_folder
           },
         })
       end,
@@ -45,8 +45,10 @@ If you have telescope installed you can also open the picker by calling `:Telesc
 
 ## TODO
 
-- support specifying autosave file location (per template?)
-- auto load template files in templates directory?
+- support passing a function to `filename` config object
+  - option to override timestamp?
 - support specifying templates folder location
-- option to clear default entries
+- support per-entry `save_file` option
+- auto load template files in templates directory?
+- option to clear default entries?
   - alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
