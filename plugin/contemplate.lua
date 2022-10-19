@@ -34,10 +34,8 @@ local function get_completion_items()
     if type(v) == 'string' then
       table.insert(completion_items, v)
     elseif type(v) == 'table' then
-      if v.name ~= nil then
-        table.insert(completion_items, v.name)
-      else
-        table.insert(completion_items, v[1])
+      if v.arg ~= nil and not vim.tbl_contains(completion_items, v.arg) then
+        table.insert(completion_items, v.arg)
       end
     end
   end
