@@ -1,20 +1,6 @@
 local contemplate = require("contemplate")
 local has_telescope, telescope = pcall(require, "telescope")
 
--- Initialize a default set of entries
-local default_entries = {
-  { arg = "js", display_name = "Javascript" },
-  { arg = "go", display_name = "Go" },
-  { arg = "lua", display_name = "Lua" },
-  { arg = "md", display_name = "Markdown" },
-  { arg = "sql", display_name = "SQL" },
-  { arg = "json", display_name = "JSON" },
-  { arg = "sh", display_name = "Shell" },
-}
-
-contemplate.entries = {}
-contemplate.add_to_entries(default_entries)
-
 -- Create `Contemplate` command
 local function contemplate_cmd_handler(args)
   local selected_entry = args.fargs[1]
