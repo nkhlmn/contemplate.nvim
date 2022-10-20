@@ -6,15 +6,17 @@ Quickly select and open a new buffer based on a file template or a filetype
 
 ## Installation
 
+Example installation and configuration using `packer`:
 ```lua
 use {
       'nkhlmn/contemplate.nvim',
       config = function()
+        -- call the `setup` function; 
         require('contemplate').setup({
           -- specify location where files will be saved
           temp_folder = '~/', 
 
-          -- save file automatically
+          -- save file automatically to the `temp_folder` when it is created
           save_file = true,
 
           -- define entries 
@@ -27,7 +29,9 @@ use {
     }
 ```
 
-### (optional) Telescope support
+### (optional but recommended) Telescope support
+
+This plugin is intended to be used with telescope. A limited amount of functionality is possible without it though (see usage).
 
 Ensure that you have loaded the extension in your telescope config:
 
@@ -39,7 +43,7 @@ require('telescope').load_extension('contemplate')
 
 Call `:Contemplate` without any args to open a telescope picker (if installed).
 
-You can also pass an argument, which should either be the filetype of the new buffer or the name of a template file located in `${stdpath('config')}/templates/`. E.g. `:Contemplate scratchpad.js`.
+You can also pass an argument, which should either be the filetype of the new buffer or the name of a template file located in `${stdpath('config')}/templates/`. E.g. `:Contemplate scratchpad.js`. Completion for these items will provided based on the entries configured, but it will only look at the `arg` and other config options will be ignored.
 
 If you have telescope installed you can also open the picker by calling `:Telescope contemplate`
 
@@ -52,3 +56,5 @@ If you have telescope installed you can also open the picker by calling `:Telesc
 - auto load template files in templates directory?
 - option to clear default entries?
   - alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
+- improve non-telescope support?
+  - allow for passing multiple arguments and handle completion based on config entries
