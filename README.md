@@ -13,11 +13,14 @@ use {
       config = function()
         -- call the `setup` function; 
         require('contemplate').setup({
-          -- specify location where files will be saved
-          temp_folder = '~/', 
+          -- specify location where files will be saved (defaults to `~/`)
+          temp_folder = '~/development/sandbox/', 
 
-          -- save file automatically to the `temp_folder` when it is created
+          -- save file automatically to the `temp_folder` when it is created (defaults to true)
           save_file = true,
+
+          -- don't use an initial set of entries (defaults to true)
+          keep_default_entries = false,
 
           -- define entries 
           entries = {
@@ -54,7 +57,6 @@ If you have telescope installed you can also open the picker by calling `:Telesc
 - support specifying templates folder location
 - support per-entry `save_file` option
 - auto load template files in templates directory?
-- option to clear default entries?
-  - alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
+- alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
 - improve non-telescope support?
   - allow for passing multiple arguments and handle completion based on config entries
