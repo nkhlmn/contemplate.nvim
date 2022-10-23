@@ -1,3 +1,4 @@
+local api = vim.api
 local utils = require("contemplate.utils")
 
 local M = {
@@ -30,9 +31,9 @@ function M.create_contemplate_win(entry, opts)
   elseif opts.new_tab then
     vim.cmd.tabnew()
   else
-    local buf = vim.api.nvim_create_buf(true, true)
-    local win = vim.api.nvim_get_current_win()
-    vim.api.nvim_win_set_buf(win, buf)
+    local buf = api.nvim_create_buf(true, true)
+    local win = api.nvim_get_current_win()
+    api.nvim_win_set_buf(win, buf)
   end
 
   local temp_filename = utils.get_temp_filename(entry)
@@ -41,19 +42,21 @@ function M.create_contemplate_win(entry, opts)
   local file_folder = entry.folder or M.temp_folder
   local file_path = file_folder .. '/' .. temp_filename
   vim.cmd.edit(file_path)
-  local buf = vim.api.nvim_get_current_buf()
-  local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+  local buf = api.nvim_get_current_buf()
+  local filetype = api.nvim_buf_get_option(buf, 'filetype')
 
   -- Template file was provided; insert it's contents into the new buf
   if is_filename then
     local template_path = M.templates_folder .. arg
     local lines = utils.get_file_lines(template_path)
-    vim.api.nvim_buf_set_lines(buf, 0, 0, false, lines)
-    vim.api.nvim_win_set_cursor(0, { 1, 0 })
+    api.nvim_buf_set_lines(buf, 0, 0, false, lines)
+    api.nvim_win_set_cursor(0, { 1, 0 })
+  else
     -- Template was not provided; do special handling for certain filetypes
-  elseif filetype == 'sh' then
-    -- Insert shebang for shell scripts
-    vim.api.nvim_buf_set_lines(buf, 0, 0, false, { '#!/bin/sh' })
+    if filetype == 'sh' then
+      -- Insert shebang for shell scripts
+      api.nvim_buf_set_lines(buf, 0, 0, false, { '#!/bin/sh' })
+    end
   end
 
   -- Save the buffer
