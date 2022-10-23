@@ -44,22 +44,24 @@ function M.get_timestamp_prefix()
   return output
 end
 
-function M.get_temp_filename(opts)
+function M.get_temp_filename(entry)
+  local arg = entry.arg
+  local is_filename = M.is_filename(arg)
   local timestamp = M.get_timestamp_prefix()
 
-  if opts.name and opts.file_extension then
-    return string.format("%s-%s.%s", opts.name, timestamp, opts.file_extension)
-  elseif opts.filename ~= nil then
-    local extension = string.match(opts.filename, "%w+.(%w+)$")
-    local name = string.match(opts.filename, "(%w+).%w+$")
-    return string.format("%s-%s.%s", name, timestamp, extension)
-  elseif opts.filename and opts.name ~= nil then
+  if not is_filename and entry.name ~= nil then
+    return string.format("%s-%s.%s", entry.name, timestamp, arg)
+  elseif not is_filename then
+    return string.format("%s.%s", timestamp, arg)
+  elseif is_filename and entry.name ~= nil then
     local file_extension = string.match(opts.filename, "%w+.(%w+)$")
-    return string.format("%s-%s.%s", opts.name, timestamp, file_extension)
-  elseif opts.file_extension then
-    return string.format("%s.%s", timestamp, opts.file_extension)
+    return string.format("%s-%s.%s", entry.name, timestamp, file_extension)
+  elseif is_filename then
+    local extension = string.match(arg, "%w+.(%w+)$")
+    local name = string.match(arg, "(%w+).%w+$")
+    return string.format("%s-%s.%s", name, timestamp, extension)
   else
-    error("Must provide either a `filename` or `file_extension`")
+    error("Could not generate a filename!")
   end
 end
 

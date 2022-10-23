@@ -20,8 +20,6 @@ local M = {
 -- @param arg: string specifying filetype or path to template
 function M.create_contemplate_win(entry, opts)
   local arg = entry.arg
-  local display_name = entry.display_name
-  local name = entry.name
   local is_filename = utils.is_filename(arg)
 
   -- Determine where to open the window
@@ -37,23 +35,7 @@ function M.create_contemplate_win(entry, opts)
     vim.api.nvim_win_set_buf(win, buf)
   end
 
-  -- Generate the filename
-  local filename_opts = {}
-  if is_filename then
-    filename_opts.filename = arg
-  else
-    filename_opts.file_extension = arg
-  end
-
-  if display_name ~= nil then
-    filename_opts.display_name = display_name
-  end
-
-  if name ~= nil then
-    filename_opts.name = name
-  end
-
-  local temp_filename = utils.get_temp_filename(filename_opts)
+  local temp_filename = utils.get_temp_filename(entry)
 
   -- Open the new file
   local file_folder = entry.folder or M.temp_folder
