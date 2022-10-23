@@ -9,27 +9,27 @@ Quickly select and open a new buffer based on a file template or a filetype
 Example installation and configuration using `packer`:
 ```lua
 use {
-      'nkhlmn/contemplate.nvim',
-      config = function()
-        -- call the `setup` function; 
-        require('contemplate').setup({
-          -- specify location where files will be saved (defaults to `~/`)
-          temp_folder = '~/development/sandbox/', 
+  'nkhlmn/contemplate.nvim',
+    config = function()
+      -- call the `setup` function; 
+  require('contemplate').setup({
+      -- specify location where files will be saved (defaults to `~/`)
+      temp_folder = '~/development/sandbox/', 
 
-          -- save file automatically to the `temp_folder` when it is created (defaults to true)
-          save_file = true,
+      -- save file automatically to the `temp_folder` when it is created (defaults to true)
+      save_file = true,
 
-          -- don't use an initial set of entries (defaults to true)
-          keep_default_entries = false,
+      -- don't use an initial set of entries (defaults to true)
+      keep_default_entries = false,
 
-          -- define entries 
-          entries = {
-            { arg = 'scratch.js', display_name = 'JS scratchpad' } -- `arg` is required; it can be a filename in the templates folder, or a file extension
-            { arg = 'lua', folder = '~/development/sandbox/lua/'}, -- `folder` overrides the global temp_folder
-          },
-        })
-      end,
-    }
+      -- define entries 
+      entries = {
+      { arg = 'scratch.js', display_name = 'JS scratchpad' } -- `arg` is required; it can be a filename in the templates folder, or a file extension
+      { arg = 'lua', folder = '~/development/sandbox/lua/'}, -- `folder` overrides the global temp_folder
+      },
+      })
+  end,
+}
 ```
 
 ### (optional but recommended) Telescope support
@@ -52,11 +52,10 @@ If you have telescope installed you can also open the picker by calling `:Telesc
 
 ## TODO
 
+- option to specify templates folder location; including per-entry
 - support passing a function to `filename` config object
-  - option to override timestamp?
-- support specifying templates folder location
-- support per-entry `save_file` option
-- auto load template files in templates directory?
-- alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
+- option to override timestamp?
+- option to auto load template files in templates directory?
+  - alternatively, don't provide defaults at all (use a list of vim filetypes if no entries are defined)?
 - improve non-telescope support?
   - allow for passing multiple arguments and handle completion based on config entries

@@ -57,11 +57,16 @@ function M.create_contemplate_win(entry, opts)
   end
 
   -- Save the buffer
-  if M.save_file then
+  local save_file = M.save_file
+  if entry.save_file ~= nil then
+    save_file = entry.save_file
+  end
+
+  if save_file then
     vim.cmd.write()
 
-    -- Make file executable if it's a shell script
     if filetype == 'sh' and not is_filename then
+      -- Make file executable if it's a shell script
       vim.cmd('!chmod +x ' .. file_path)
     end
   end
