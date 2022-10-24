@@ -1,20 +1,20 @@
 local api = vim.api
-local utils = require("contemplate.utils")
+local utils = require('contemplate.utils')
 
 local M = {
   entries = {},
   default_entries = {
-    { arg = "js", display_name = "Javascript" },
-    { arg = "go", display_name = "Go" },
-    { arg = "lua", display_name = "Lua" },
-    { arg = "md", display_name = "Markdown" },
-    { arg = "sql", display_name = "SQL" },
-    { arg = "json", display_name = "JSON" },
-    { arg = "sh", display_name = "Shell" },
+    { arg = 'js', display_name = 'Javascript' },
+    { arg = 'go', display_name = 'Go' },
+    { arg = 'lua', display_name = 'Lua' },
+    { arg = 'md', display_name = 'Markdown' },
+    { arg = 'sql', display_name = 'SQL' },
+    { arg = 'json', display_name = 'JSON' },
+    { arg = 'sh', display_name = 'Shell' },
   },
-  temp_folder = "~/",
+  temp_folder = '~/',
   save_file = true,
-  templates_folder = vim.fn.stdpath("config") .. "/templates/",
+  templates_folder = vim.fn.stdpath('config') .. '/templates/',
 }
 
 --- Open a new scratchpad buffer
@@ -24,9 +24,9 @@ function M.create_contemplate_win(entry, opts)
   local is_filename = utils.is_filename(arg)
 
   -- Determine where to open the window
-  if opts.split == "h" then
+  if opts.split == 'h' then
     vim.cmd.new()
-  elseif opts.split == "v" then
+  elseif opts.split == 'v' then
     vim.cmd.vnew()
   elseif opts.new_tab then
     vim.cmd.tabnew()
@@ -78,7 +78,7 @@ end
 function M.set_entries(entries, keep_default_entries)
   local new_entries = {}
 
-  if type(entries) == "table" then
+  if type(entries) == 'table' then
     vim.list_extend(new_entries, entries)
   end
 

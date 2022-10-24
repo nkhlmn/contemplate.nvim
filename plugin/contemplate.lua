@@ -1,5 +1,5 @@
-local contemplate = require("contemplate")
-local has_telescope, telescope = pcall(require, "telescope")
+local contemplate = require('contemplate')
+local has_telescope, telescope = pcall(require, 'telescope')
 
 -- Create `Contemplate` command
 local function contemplate_cmd_handler(args)
@@ -9,7 +9,7 @@ local function contemplate_cmd_handler(args)
   elseif has_telescope then
     telescope.extensions.contemplate.contemplate()
   else
-    print("You must provide an argument.")
+    print('You must provide an argument.')
   end
 end
 
@@ -34,4 +34,4 @@ local contemplate_cmd_opts = {
   nargs = '?',
 }
 
-vim.api.nvim_create_user_command("Contemplate", contemplate_cmd_handler, contemplate_cmd_opts)
+vim.api.nvim_create_user_command('Contemplate', contemplate_cmd_handler, contemplate_cmd_opts)
