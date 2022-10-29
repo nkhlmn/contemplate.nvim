@@ -5,7 +5,7 @@ local has_telescope, telescope = pcall(require, 'telescope')
 local function contemplate_cmd_handler(args)
   local selected_entry = args.fargs[1]
   if selected_entry ~= nil then
-    contemplate.create_contemplate_win(selected_entry, { new_tab = true })
+    contemplate.create_contemplate_win(selected_entry, {})
   elseif has_telescope then
     telescope.extensions.contemplate.contemplate()
   else

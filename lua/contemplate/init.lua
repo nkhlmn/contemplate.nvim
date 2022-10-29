@@ -20,7 +20,7 @@ local M = {
 --- Open a new scratchpad buffer
 -- @param arg: string specifying filetype or path to template
 function M.create_contemplate_win(entry, opts)
-  local arg = entry.arg
+  local arg = entry.arg or entry
   local is_filename = utils.is_filename(arg)
 
   -- Determine where to open the window

@@ -27,7 +27,12 @@ function M.get_file_lines(file_path)
 end
 
 function M.is_filename(arg)
-  return arg:match('%.%a+$') ~= nil
+  if arg ~= nil then
+    local match = arg:match('%.%a+$')
+    return match ~= nil
+  else
+    return false
+  end
 end
 
 function M.get_timestamp_prefix()
@@ -45,7 +50,7 @@ function M.get_timestamp_prefix()
 end
 
 function M.get_temp_filename(entry)
-  local arg = entry.arg
+  local arg = entry.arg or entry
   local is_filename = M.is_filename(arg)
   local timestamp = M.get_timestamp_prefix()
 
