@@ -76,6 +76,10 @@ function M.create_contemplate_win(entry, opts)
 end
 
 function M.set_entries(entries, keep_default_entries)
+  if entries == nil then
+    return
+  end
+
   local new_entries = {}
 
   if type(entries) == 'table' then
