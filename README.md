@@ -12,9 +12,10 @@ Example installation and configuration using `packer`:
 use { 'nkhlmn/contemplate.nvim' }
 ```
 
-### (optional but recommended) Telescope support
+### Telescope support (optional, but recommended)
 
-This plugin is intended to be used with telescope. A limited amount of functionality is possible without it though (see usage).
+This plugin is intended to be used with telescope.
+A limited amount of functionality is possible without it though (see usage).
 
 Ensure that you have loaded the extension in your telescope config:
 
@@ -24,7 +25,10 @@ require('telescope').load_extension('contemplate')
 
 ## Configuration
 
+Define a `vim.g.contemplate_config` variable with your configuration. For example:
+
 ```lua
+-- Example user config:
 vim.g.contemplate_config = {
   entries = {
     { arg = 'scratch.js', display_name = 'JS scratchpad' },
@@ -34,15 +38,38 @@ vim.g.contemplate_config = {
   include_defaults = false,
   temp_folder = '~/development/sandbox/'
 }
+
+-- Default config:
+default_config = {
+  entries = {},
+  temp_folder = '~/', -- Location to save file
+  save_file = true, -- Auto save file after creation
+  templates_folder = vim.fn.stdpath('config') .. '/templates/', -- Location for template files
+  include_defaults = true, -- Include default entries in telescope pickers
+}
+
+-- Default entries
+default_entries = {
+  { arg = 'js', display_name = 'Javascript' },
+  { arg = 'lua', display_name = 'Lua' },
+  { arg = 'python', display_name = 'Python' },
+  { arg = 'go', display_name = 'Go' },
+  { arg = 'sql', display_name = 'SQL' },
+  { arg = 'json', display_name = 'JSON' },
+  { arg = 'sh', display_name = 'Shell' },
+  { arg = 'md', display_name = 'Markdown' },
+}
 ```
 
-# Usage
+## Usage
 
-Call `:Contemplate` without any args to open a telescope picker (if installed).
+Call `:Contemplate` without any args to open a telescope picker (if installed)
+or bt calling `:Telescope contemplate`.
 
-You can also pass an argument, which should either be the filetype of the new buffer or the name of a template file located in `${stdpath('config')}/templates/`. E.g. `:Contemplate scratchpad.js`. Completion for these items will provided based on the entries configured, but it will only look at the `arg` and other config options will be ignored.
-
-If you have telescope installed you can also open the picker by calling `:Telescope contemplate`
+You can also pass an argument, which should either be the filetype of the new
+buffer or the name of a template file. E.g. `:Contemplate scratchpad.js`.
+Completion for these items will provided based on the entries configured, but it
+will only look at the `arg` and other config options will be ignored.
 
 ## TODO
 
