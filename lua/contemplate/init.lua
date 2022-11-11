@@ -17,6 +17,7 @@ local M = {
     temp_folder = '~/',
     save_file = true,
     templates_folder = vim.fn.stdpath('config') .. '/templates/',
+    include_defaults = true,
   },
 }
 
@@ -25,10 +26,10 @@ function M.get_config()
   return vim.tbl_deep_extend('force', M.default_config, user_config)
 end
 
-function M.get_entries(include_defaults)
-  local user_config = vim.g.contemplate_config
-  local user_entries = user_config.entries or {}
-  if include_defaults then
+function M.get_entries()
+  local config = M.get_config()
+  local user_entries = config.entries or {}
+  if config.include_defaults then
     vim.list_extend(user_entries, M.default_entries)
   end
   return user_entries
