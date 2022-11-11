@@ -13,14 +13,30 @@ local M = {
     { arg = 'sh', display_name = 'Shell' },
     { arg = 'md', display_name = 'Markdown' },
   },
-  temp_folder = '~/',
-  save_file = true,
-  templates_folder = vim.fn.stdpath('config') .. '/templates/',
+  default_config = {
+    temp_folder = '~/',
+    save_file = true,
+    templates_folder = vim.fn.stdpath('config') .. '/templates/',
+  },
 }
 
+function M.get_config()
+  local user_config = vim.g.contemplate_config or {}
+  return vim.tbl_deep_extend('force', M.default_config, user_config)
+end
+
+function M.get_entries(include_defaults)
+  local user_config = vim.g.contemplate_config
+  local user_entries = user_config.entries or {}
+  if include_defaults then
+    vim.list_extend(user_entries, M.default_entries)
+  end
+  return user_entries
+end
+
 --- Open a new scratchpad buffer
--- @param arg: string specifying filetype or path to template
 function M.create_contemplate_win(entry, opts)
+  local config = M.get_config()
   local arg = entry.arg or entry
   local is_filename = utils.is_filename(arg)
 
@@ -40,7 +56,7 @@ function M.create_contemplate_win(entry, opts)
   local temp_filename = utils.get_temp_filename(entry)
 
   -- Open the new file
-  local file_folder = entry.folder or M.temp_folder
+  local file_folder = entry.folder or config.temp_folder
   local file_path = file_folder .. '/' .. temp_filename
   vim.cmd.edit(file_path)
   local buf = api.nvim_get_current_buf()
@@ -48,7 +64,7 @@ function M.create_contemplate_win(entry, opts)
 
   -- Template file was provided; insert it's contents into the new buf
   if is_filename then
-    local template_path = M.templates_folder .. arg
+    local template_path = config.templates_folder .. arg
     local lines = utils.get_file_lines(template_path)
     api.nvim_buf_set_lines(buf, 0, 0, false, lines)
     api.nvim_win_set_cursor(0, { 1, 0 })

@@ -9,28 +9,7 @@ Quickly select and open a new buffer based on a file template or a filetype
 Example installation and configuration using `packer`:
 
 ```lua
-use {
-  'nkhlmn/contemplate.nvim',
-  config = function()
-    -- call the `setup` function;
-    require('contemplate').setup({
-        -- specify location where files will be saved (defaults to `~/`)
-        temp_folder = '~/development/sandbox/',
-
-        -- save file automatically to the `temp_folder` when it is created (defaults to true)
-        save_file = true,
-
-        -- don't use an initial set of entries (defaults to true)
-        keep_default_entries = false,
-
-        -- define entries
-        entries = {
-          { arg = 'scratch.js', display_name = 'JS scratchpad' } -- `arg` is required; it can be a filename in the templates folder, or a file extension
-          { arg = 'lua', folder = '~/development/sandbox/lua/'}, -- `folder` overrides the global temp_folder
-        },
-      })
-  end,
-}
+use { 'nkhlmn/contemplate.nvim' }
 ```
 
 ### (optional but recommended) Telescope support
@@ -43,6 +22,20 @@ Ensure that you have loaded the extension in your telescope config:
 require('telescope').load_extension('contemplate')
 ```
 
+## Configuration
+
+```lua
+vim.g.contemplate_config = {
+  entries = {
+    { arg = 'scratch.js', display_name = 'JS scratchpad' },
+    { arg = 'lua', display_name = 'Neovim Lua', name = 'nvim_lua' },
+    { arg = 'lua', display_name = 'Neovim Foo', name = 'foo_nvim_lua', folder = '~/development/sandbox/foo/' },
+  },
+  include_defaults = false,
+  temp_folder = '~/development/sandbox/'
+}
+```
+
 # Usage
 
 Call `:Contemplate` without any args to open a telescope picker (if installed).
@@ -53,7 +46,7 @@ If you have telescope installed you can also open the picker by calling `:Telesc
 
 ## TODO
 
-- option to specify templates folder location; including per-entry
+- option to specify per-entry templates folder
 - support passing a function to `filename` config object
 - option to override timestamp?
 - improve non-telescope support?

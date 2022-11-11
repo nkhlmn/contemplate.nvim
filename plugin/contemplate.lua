@@ -15,7 +15,7 @@ end
 
 local function get_completion_items()
   local completion_items = {}
-  local entries = contemplate.entries
+  local entries = contemplate.get_entries(true)
   for _, v in ipairs(entries) do
     if type(v) == 'string' then
       table.insert(completion_items, v)

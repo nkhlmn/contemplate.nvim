@@ -51,7 +51,8 @@ local function get_telescope_picker(results, opts)
     results = {}
   end
 
-  local contemplate_entries = contemplate.entries
+  local config = contemplate.get_config()
+  local contemplate_entries = contemplate.get_entries(config.include_defaults or true)
 
   if contemplate_entries ~= nil and type(contemplate_entries) == 'table' then
     results = vim.list_extend(results, contemplate_entries)
