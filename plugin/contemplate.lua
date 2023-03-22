@@ -34,4 +34,13 @@ local contemplate_cmd_opts = {
   nargs = '?',
 }
 
+local function contemplate_history_cmd_handler(_)
+  if has_telescope then
+    telescope.extensions.contemplate.contemplate_history()
+  else
+    print('Telescope is required for browsing history')
+  end
+end
+
 vim.api.nvim_create_user_command('Contemplate', contemplate_cmd_handler, contemplate_cmd_opts)
+vim.api.nvim_create_user_command('ContemplateHistory', contemplate_history_cmd_handler, {})

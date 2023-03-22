@@ -77,6 +77,30 @@ local function open_contemplate_picker(results, opts)
   picker:find()
 end
 
+local function open_history_picker(results, opts)
+  local data_path = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
+  results = vim.fn.readfile(data_path)
+
+  local pickers = require('telescope.pickers')
+  local conf = require('telescope.config').values
+  local finders = require('telescope.finders')
+
+  local finder = finders.new_table({
+    results = results,
+    entry_maker = function(entry)
+      return { value = entry, display = entry, ordinal = entry }
+    end,
+  })
+
+  local picker = pickers.new(opts, {
+    prompt_title = 'Contemplate History',
+    finder = finder,
+    sorter = conf.generic_sorter(opts),
+  })
+
+  picker:find()
+end
+
 return require('telescope').register_extension({
-  exports = { contemplate = open_contemplate_picker },
+  exports = { contemplate = open_contemplate_picker, contemplate_history = open_history_picker },
 })
