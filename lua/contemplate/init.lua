@@ -17,6 +17,7 @@ local M = {
     temp_folder = '~/',
     save_file = true,
     templates_folder = vim.fn.stdpath('config') .. '/templates/',
+    data_folder = vim.fn.stdpath('data') .. '/contemplate/',
     include_defaults = true,
   },
 }
@@ -78,13 +79,17 @@ function M.create_contemplate_win(entry, opts)
   end
 
   -- Save the buffer
-  local save_file = M.save_file
+  local save_file = config.save_file
   if entry.save_file ~= nil then
     save_file = entry.save_file
   end
 
   if save_file then
     vim.cmd.write()
+    vim.fn.system('mkdir ' .. config.data_folder)
+    local hist_file_path = config.data_folder .. 'contemplate_history.txt'
+    local cmd = 'echo "' .. file_path .. '" >> ' .. hist_file_path
+    vim.fn.system(cmd)
 
     if filetype == 'sh' and not is_filename then
       -- Make file executable if it's a shell script
