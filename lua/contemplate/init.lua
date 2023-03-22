@@ -88,7 +88,8 @@ function M.create_contemplate_win(entry, opts)
     vim.cmd.write()
     vim.fn.system('mkdir ' .. config.data_folder)
     local hist_file_path = config.data_folder .. 'contemplate_history.txt'
-    local cmd = 'echo "' .. file_path .. '" >> ' .. hist_file_path
+    local normalized_file_path = vim.loop.fs_realpath(vim.fn.expand(file_path))
+    local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
     vim.fn.system(cmd)
 
     if filetype == 'sh' and not is_filename then
