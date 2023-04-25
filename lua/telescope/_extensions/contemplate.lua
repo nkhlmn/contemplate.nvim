@@ -107,5 +107,8 @@ local function open_history_picker(results, opts)
 end
 
 return require('telescope').register_extension({
-  exports = { contemplate = open_contemplate_picker, contemplate_history = open_history_picker },
+  exports = {
+    contemplate = open_contemplate_picker,
+    contemplate_history = open_history_picker,
+  },
 })
