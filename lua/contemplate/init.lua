@@ -1,4 +1,3 @@
-local api = vim.api
 local utils = require('contemplate.utils')
 
 local M = {
@@ -40,62 +39,23 @@ end
 function M.create_contemplate_win(entry, opts)
   local config = M.get_config()
   local arg = entry.arg or entry
-  local is_filename = utils.is_filename(arg)
 
-  -- Determine where to open the window
-  if opts.split == 'h' then
-    vim.cmd.new()
-  elseif opts.split == 'v' then
-    vim.cmd.vnew()
-  elseif opts.new_tab then
-    vim.cmd.tabnew()
-  else
-    local buf = api.nvim_create_buf(true, true)
-    local win = api.nvim_get_current_win()
-    api.nvim_win_set_buf(win, buf)
-  end
+  -- Open the window
+  utils.open_new_window(opts)
 
+  -- Get the filename
   local temp_filename = utils.get_temp_filename(entry)
-
-  -- Open the new file
   local file_folder = entry.folder or config.temp_folder
   local file_path = file_folder .. '/' .. temp_filename
-  vim.cmd.edit(file_path)
-  local buf = api.nvim_get_current_buf()
-  local filetype = api.nvim_buf_get_option(buf, 'filetype')
 
-  -- Template file was provided; insert it's contents into the new buf
-  if is_filename then
-    local template_path = config.templates_folder .. arg
-    local lines = utils.get_file_lines(template_path)
-    api.nvim_buf_set_lines(buf, 0, 0, false, lines)
-    api.nvim_win_set_cursor(0, { 1, 0 })
-  else
-    -- Template was not provided; do special handling for certain filetypes
-    if filetype == 'sh' then
-      -- Insert shebang for shell scripts
-      api.nvim_buf_set_lines(buf, 0, 0, false, { '#!/bin/sh' })
-    end
-  end
+  -- Open and init a new buffer
+  vim.cmd.edit(file_path)
+  utils.init_buffer(config, arg)
 
   -- Save the buffer
-  local save_file = config.save_file
-  if entry.save_file ~= nil then
-    save_file = entry.save_file
-  end
-
+  local save_file = entry.save_file or config.save_file
   if save_file then
-    vim.cmd.write()
-    vim.fn.system('mkdir ' .. config.data_folder)
-    local hist_file_path = config.data_folder .. 'contemplate_history.txt'
-    local normalized_file_path = vim.loop.fs_realpath(vim.fn.expand(file_path))
-    local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
-    vim.fn.system(cmd)
-
-    if filetype == 'sh' and not is_filename then
-      -- Make file executable if it's a shell script
-      vim.cmd('!chmod +x ' .. file_path)
-    end
+    utils.save_file(config, file_path)
   end
 end
 

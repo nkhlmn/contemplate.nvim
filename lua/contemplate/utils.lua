@@ -70,4 +70,55 @@ function M.get_temp_filename(entry)
   end
 end
 
+function M.open_new_window(opts)
+  if opts.split == 'h' then
+    vim.cmd.new()
+  elseif opts.split == 'v' then
+    vim.cmd.vnew()
+  elseif opts.new_tab then
+    vim.cmd.tabnew()
+  else
+    local buf = vim.api.nvim_create_buf(true, true)
+    local win = vim.api.nvim_get_current_win()
+    vim.api.nvim_win_set_buf(win, buf)
+  end
+end
+
+function M.save_file(config, file_path)
+    local is_filename = M.is_filename(arg)
+    local buf = vim.api.nvim_get_current_buf()
+    local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+    vim.cmd.write()
+    vim.fn.system('mkdir ' .. config.data_folder)
+    local hist_file_path = config.data_folder .. 'contemplate_history.txt'
+    local normalized_file_path = vim.loop.fs_realpath(vim.fn.expand(file_path))
+    local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
+    vim.fn.system(cmd)
+
+    if filetype == 'sh' and not is_filename then
+      -- Make file executable if it's a shell script
+      vim.cmd('!chmod +x ' .. file_path)
+    end
+end
+
+function M.init_buffer(config, arg)
+  local is_filename = M.is_filename(arg)
+  local buf = vim.api.nvim_get_current_buf()
+  local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+
+  -- Template file was provided; insert it's contents into the new buf
+  if is_filename then
+    local template_path = config.templates_folder .. arg
+    local lines = M.get_file_lines(template_path)
+    vim.api.nvim_buf_set_lines(buf, 0, 0, false, lines)
+    vim.api.nvim_win_set_cursor(0, { 1, 0 })
+  else
+    -- Template was not provided; do special handling for certain filetypes
+    if filetype == 'sh' then
+      -- Insert shebang for shell scripts
+      vim.api.nvim_buf_set_lines(buf, 0, 0, false, { '#!/bin/sh' })
+    end
+  end
+end
+
 return M
