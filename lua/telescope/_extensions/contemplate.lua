@@ -78,8 +78,13 @@ local function open_contemplate_picker(results, opts)
 end
 
 local function open_history_picker(results, opts)
-  local data_path = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
-  results = vim.fn.readfile(data_path)
+  local history_file_path = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
+
+  if vim.fn.filereadable(history_file_path) == 0 then
+    vim.fn.system('touch ' .. history_file_path)
+  end
+
+  results = vim.fn.readfile(history_file_path)
 
   local pickers = require('telescope.pickers')
   local conf = require('telescope.config').values
