@@ -85,7 +85,7 @@ function M.open_new_window(opts)
 end
 
 function M.save_file(config, file_path)
-    local is_filename = M.is_filename(arg)
+    local is_filename = M.is_filename(file_path)
     local buf = vim.api.nvim_get_current_buf()
     local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
     vim.cmd.write()
