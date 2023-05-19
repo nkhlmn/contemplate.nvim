@@ -101,6 +101,7 @@ local function open_history_picker(results, opts)
     prompt_title = 'Contemplate History',
     finder = finder,
     sorter = conf.generic_sorter(opts),
+    previewer = conf.file_previewer({}),
   })
 
   picker:find()
