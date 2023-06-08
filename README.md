@@ -1,7 +1,5 @@
 # contemplate.nvim
 
-## :exclamation::exclamation::exclamation: WIP :exclamation::exclamation::exclamation:
-
 Quickly select and open a new buffer based on a file template or a filetype
 
 ## Installation
@@ -63,17 +61,21 @@ default_entries = {
 
 ## Usage
 
-Call `:Contemplate` without any args to open a telescope picker (if installed)
-or bt calling `:Telescope contemplate`.
+### With telescope.nvim
 
-You can also pass an argument, which should either be the filetype of the new
-buffer or the name of a template file. E.g. `:Contemplate scratchpad.js`.
-Completion for these items will provided based on the entries configured, but it
-will only look at the `arg` and other config options will be ignored.
+Call `:Contemplate` without any args to open a telescope picker (if installed)
+or by calling `:Telescope contemplate`.
+
+### Without telescope.nvim
+
+An argument is required when calling `:Contemplate` without telescope.nvim
+installed. The argument should either be the filetype of the new buffer or the
+name of a template file. E.g. `:Contemplate scratchpad.js`. Completion for
+these items will provided based on the entries configured, but it will only look
+at the `arg` and other config options will be ignored.
 
 ## TODO
 
-- option to specify per-entry templates folder
 - support passing a function to `filename` config object
 - option to override timestamp?
 - improve non-telescope support?
