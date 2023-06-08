@@ -5,12 +5,11 @@ local M = {
   default_entries = {
     { arg = 'js', display_name = 'Javascript' },
     { arg = 'lua', display_name = 'Lua' },
-    { arg = 'python', display_name = 'Python' },
-    { arg = 'go', display_name = 'Go' },
     { arg = 'sql', display_name = 'SQL' },
     { arg = 'json', display_name = 'JSON' },
-    { arg = 'sh', display_name = 'Shell' },
+    { arg = 'html', display_name = 'HTML' },
     { arg = 'md', display_name = 'Markdown' },
+    { arg = 'sh', display_name = 'Shell' },
   },
   default_config = {
     temp_folder = '~/',
