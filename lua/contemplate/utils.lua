@@ -28,7 +28,7 @@ end
 
 function M.is_filename(arg)
   if arg ~= nil then
-    local match = arg:match('%.%a+$')
+    local match = arg:match('%.%w+$')
     return match ~= nil
   else
     return false
