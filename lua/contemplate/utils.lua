@@ -1,5 +1,7 @@
 local M = {}
 
+---@param contents string
+---@return string[]
 function M.split_lines(contents)
   local lines = {}
   for line in string.gmatch(contents, '(.-)\n') do
@@ -8,12 +10,14 @@ function M.split_lines(contents)
   return lines
 end
 
-function M.get_file_contents(file_path)
-  if file_path == nil then
+---@param filename string
+---@return string
+function M.get_file_contents(filename)
+  if filename == nil then
     return ''
   end
 
-  local file = io.open(file_path)
+  local file = io.open(filename)
   if file ~= nil then
     return file:read('a')
   else
@@ -21,11 +25,15 @@ function M.get_file_contents(file_path)
   end
 end
 
-function M.get_file_lines(file_path)
-  local file_contents = M.get_file_contents(file_path)
-  return M.split_lines(file_contents)
+---@param filename string
+---@return string[]
+function M.get_file_lines(filename)
+  local contents = M.get_file_contents(filename)
+  return M.split_lines(contents)
 end
 
+---@param arg string
+---@return boolean
 function M.is_filename(arg)
   if arg ~= nil then
     local match = arg:match('%.%w+$')
@@ -35,6 +43,7 @@ function M.is_filename(arg)
   end
 end
 
+---@return string
 function M.get_timestamp_prefix()
   local current_date = os.date('*t')
   local output = string.format(
@@ -49,6 +58,8 @@ function M.get_timestamp_prefix()
   return output
 end
 
+---@param entry ContemplateEntry
+---@return string
 function M.get_temp_filename(entry)
   local arg = entry.arg or entry
   local is_filename = M.is_filename(arg)
@@ -70,6 +81,7 @@ function M.get_temp_filename(entry)
   end
 end
 
+---@param opts table
 function M.open_new_window(opts)
   if opts.split == 'h' then
     vim.cmd.new()
@@ -84,13 +96,15 @@ function M.open_new_window(opts)
   end
 end
 
-function M.save_file(config, file_path)
+---@param opts ContemplateOpts
+---@param file_path string
+function M.save_file(opts, file_path)
     local is_filename = M.is_filename(file_path)
     local buf = vim.api.nvim_get_current_buf()
     local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
     vim.cmd.write()
-    vim.fn.system('mkdir ' .. config.data_folder)
-    local hist_file_path = config.data_folder .. 'contemplate_history.txt'
+    vim.fn.system('mkdir ' .. opts.data_folder)
+    local hist_file_path = opts.data_folder .. 'contemplate_history.txt'
     local normalized_file_path = vim.loop.fs_realpath(vim.fn.expand(file_path))
     local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
     vim.fn.system(cmd)
@@ -101,14 +115,16 @@ function M.save_file(config, file_path)
     end
 end
 
-function M.init_buffer(config, arg)
+---@param opts ContemplateOpts
+---@param arg string
+function M.init_buffer(opts, arg)
   local is_filename = M.is_filename(arg)
   local buf = vim.api.nvim_get_current_buf()
   local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
 
   -- Template file was provided; insert it's contents into the new buf
   if is_filename then
-    local template_path = config.templates_folder .. arg
+    local template_path = opts.templates_folder .. arg
     local lines = M.get_file_lines(template_path)
     vim.api.nvim_buf_set_lines(buf, 0, 0, false, lines)
     vim.api.nvim_win_set_cursor(0, { 1, 0 })

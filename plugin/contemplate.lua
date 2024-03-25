@@ -34,7 +34,7 @@ local contemplate_cmd_opts = {
   nargs = '?',
 }
 
-local function contemplate_history_cmd_handler(_)
+local function open_history(_)
   if has_telescope then
     telescope.extensions.contemplate.contemplate_history()
   else
@@ -42,11 +42,11 @@ local function contemplate_history_cmd_handler(_)
   end
 end
 
-local function contemplate_clear_history_cmd_handler(_)
+local function clear_history(_)
   local history_file_path  = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
   vim.fn.delete(history_file_path)
 end
 
 vim.api.nvim_create_user_command('Contemplate', contemplate_cmd_handler, contemplate_cmd_opts)
-vim.api.nvim_create_user_command('ContemplateHistory', contemplate_history_cmd_handler, {})
-vim.api.nvim_create_user_command('ContemplateClearHistory', contemplate_clear_history_cmd_handler, {})
+vim.api.nvim_create_user_command('ContemplateHistory', open_history, {})
+vim.api.nvim_create_user_command('ContemplateClearHistory', clear_history, {})

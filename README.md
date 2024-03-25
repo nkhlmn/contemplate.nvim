@@ -1,14 +1,12 @@
 # contemplate.nvim
 
-Quickly select and open a new buffer based on a file template or a filetype
+Quickly select and open a new buffer based on a file template or a filetype.
 
 ## Installation
 
 Example installation and configuration using `packer`:
 
-```lua
-use { 'nkhlmn/contemplate.nvim' }
-```
+Install the plugin with your preferred neovim package manager.
 
 ### Telescope support (optional, but recommended)
 
@@ -23,43 +21,49 @@ require('telescope').load_extension('contemplate')
 
 ## Configuration
 
-Define a `vim.g.contemplate_config` variable with your configuration. For example:
+Call the `setup` function only if you need to set custom options. E.g.
 
 ```lua
--- Example user config:
-vim.g.contemplate_config = {
+-- Opts shown below are the defaults that will be set if `setup()` is not called:
+local opts = {
+  -- Defines the options that will show up. See more about how this works in the section below
   entries = {
-    { arg = 'scratch.js', display_name = 'JS scratchpad' },
-    { arg = 'lua', display_name = 'Neovim Lua', name = 'nvim_lua' },
-    { arg = 'lua', display_name = 'Neovim Foo', name = 'foo_nvim_lua', folder = '~/development/sandbox/foo/' },
+    { arg = 'js', display_name = 'Javascript' },
+    { arg = 'lua', display_name = 'Lua' },
+    { arg = 'python', display_name = 'Python' },
+    { arg = 'go', display_name = 'Go' },
+    { arg = 'sql', display_name = 'SQL' },
+    { arg = 'json', display_name = 'JSON' },
+    { arg = 'sh', display_name = 'Shell' },
+    { arg = 'md', display_name = 'Markdown' },
   },
-  include_defaults = false,
-  temp_folder = '~/development/sandbox/'
+
+  -- Location to save file
+  temp_folder = '~/',
+
+  -- Auto save file after creation
+  save_file = true,
+
+  -- Location to look for template files
+  templates_folder = vim.fn.stdpath('config') .. '/templates/',
+
+  -- Include default entries in telescope pickers/menu completion
+  --    `true` will merge the default entries with your own
+  --    `false` will override the defaults with your own
+  include_default_entries = true,
 }
 
--- Default config:
-default_config = {
-  entries = {},
-  temp_folder = '~/', -- Location to save file
-  save_file = true, -- Auto save file after creation
-  templates_folder = vim.fn.stdpath('config') .. '/templates/', -- Location for template files
-  include_defaults = true, -- Include default entries in telescope pickers
-}
+require('comtemplate').setup(opts)
 
--- Default entries
-default_entries = {
-  { arg = 'js', display_name = 'Javascript' },
-  { arg = 'lua', display_name = 'Lua' },
-  { arg = 'python', display_name = 'Python' },
-  { arg = 'go', display_name = 'Go' },
-  { arg = 'sql', display_name = 'SQL' },
-  { arg = 'json', display_name = 'JSON' },
-  { arg = 'sh', display_name = 'Shell' },
-  { arg = 'md', display_name = 'Markdown' },
-}
 ```
 
+### Entry
+
+TODO: This is how you determine what shows up in the telescope picker/menu completion and what it does.
+
 ## Usage
+
+Telescope is recommended for this but some limited functionality is avaiable without it.
 
 ### With telescope.nvim
 
@@ -78,4 +82,3 @@ at the `arg` and other config options will be ignored.
 
 - support passing a function to `filename` config object
 - option to override timestamp?
-- improve non-telescope support?

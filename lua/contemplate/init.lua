@@ -1,40 +1,61 @@
 local utils = require('contemplate.utils')
 
+---@class (exact) ContemplateOpts
+---@field temp_folder string
+---@field save_file boolean
+---@field templates_folder string
+---@field data_folder string
+---@field include_default_entries boolean
+---@field entries? ContemplateEntry[]
+
+---@class ContemplateEntry
+---@field arg string
+---@field display_name string
+---@field name? string
+---@field folder? string
+---@field save_file? boolean
+
+---@class Contemplate
+---@field entries ContemplateEntry[]
+---@field default_entries ContemplateEntry[]
+---@field opts ContemplateOpts
+---@field get_config function
+---@field get_entries function
+---@field create_contemplate_win function
+---@field setup function
 local M = {
-  entries = {},
-  default_entries = {
-    { arg = 'js', display_name = 'Javascript' },
-    { arg = 'lua', display_name = 'Lua' },
-    { arg = 'sql', display_name = 'SQL' },
+  entries = {
+    { arg = 'js',   display_name = 'Javascript' },
+    { arg = 'lua',  display_name = 'Lua' },
+    { arg = 'sql',  display_name = 'SQL' },
     { arg = 'json', display_name = 'JSON' },
     { arg = 'html', display_name = 'HTML' },
-    { arg = 'md', display_name = 'Markdown' },
-    { arg = 'sh', display_name = 'Shell' },
+    { arg = 'md',   display_name = 'Markdown' },
+    { arg = 'sh',   display_name = 'Shell' },
   },
-  default_config = {
+  opts = {
     temp_folder = '~/',
     save_file = true,
     templates_folder = vim.fn.stdpath('config') .. '/templates/',
     data_folder = vim.fn.stdpath('data') .. '/contemplate/',
-    include_defaults = true,
+    include_default_entries = true,
   },
 }
 
+---@return ContemplateOpts
 function M.get_config()
   local user_config = vim.g.contemplate_config or {}
-  return vim.tbl_deep_extend('force', M.default_config, user_config)
+  return vim.tbl_deep_extend('force', M.opts, user_config)
 end
 
+---@return table
 function M.get_entries()
-  local config = M.get_config()
-  local user_entries = config.entries or {}
-  if config.include_defaults then
-    vim.list_extend(user_entries, M.default_entries)
-  end
-  return user_entries
+  return M.entries
 end
 
---- Open a new scratchpad buffer
+---Open a new scratchpad buffer
+---@param entry ContemplateEntry
+---@param opts table
 function M.create_contemplate_win(entry, opts)
   local config = M.get_config()
   local arg = entry.arg or entry
@@ -58,33 +79,17 @@ function M.create_contemplate_win(entry, opts)
   end
 end
 
-function M.set_entries(entries, keep_default_entries)
-  if entries == nil then
-    return
-  end
-
-  local new_entries = {}
-
-  if type(entries) == 'table' then
-    vim.list_extend(new_entries, entries)
-  end
-
-  if keep_default_entries then
-    vim.list_extend(new_entries, M.default_entries)
-  end
-
-  M.entries = new_entries
-end
-
+---@param opts ContemplateOpts
 function M.setup(opts)
-  M.entries = M.default_entries
+  if opts ~= nil and type(opts) == 'table' then
+    M.opts = vim.tbl_deep_extend('force', M.opts, opts)
+  end
 
-  for key, value in pairs(opts) do
-    if key == 'entries' then
-      M.set_entries(value, opts.keep_default_entries ~= false)
-    else
-      M[key] = value
-    end
+  local user_entries = opts.entries or {}
+  if opts.include_default_entries ~= false then
+    M.entries = vim.tbl_extend('force', M.entries, user_entries)
+  else
+    M.entries = user_entries
   end
 end
 
