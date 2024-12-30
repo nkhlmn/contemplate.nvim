@@ -101,11 +101,11 @@ end
 function M.save_file(opts, file_path)
     local is_filename = M.is_filename(file_path)
     local buf = vim.api.nvim_get_current_buf()
-    local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+    local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
     vim.cmd.write()
     vim.fn.system('mkdir ' .. opts.data_folder)
     local hist_file_path = opts.data_folder .. 'contemplate_history.txt'
-    local normalized_file_path = vim.loop.fs_realpath(vim.fn.expand(file_path))
+    local normalized_file_path = vim.uv.fs_realpath(vim.fn.expand(file_path))
     local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
     vim.fn.system(cmd)
 
@@ -120,7 +120,7 @@ end
 function M.init_buffer(opts, arg)
   local is_filename = M.is_filename(arg)
   local buf = vim.api.nvim_get_current_buf()
-  local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
+  local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
 
   -- Template file was provided; insert it's contents into the new buf
   if is_filename then
