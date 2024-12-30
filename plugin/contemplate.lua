@@ -1,15 +1,12 @@
 local contemplate = require('contemplate')
-local has_telescope, telescope = pcall(require, 'telescope')
 
 -- Create `Contemplate` command
 local function contemplate_cmd_handler(args)
   local selected_entry = args.fargs[1]
   if selected_entry ~= nil then
     contemplate.create_contemplate_win(selected_entry, {})
-  elseif has_telescope then
-    telescope.extensions.contemplate.contemplate()
   else
-    print('You must provide an argument.')
+    contemplate.open_template_picker()
   end
 end
 
@@ -35,11 +32,7 @@ local contemplate_cmd_opts = {
 }
 
 local function open_history(_)
-  if has_telescope then
-    telescope.extensions.contemplate.contemplate_history()
-  else
-    print('Telescope is required for browsing history')
-  end
+  contemplate.open_history_picker()
 end
 
 local function clear_history(_)

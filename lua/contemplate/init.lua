@@ -93,4 +93,51 @@ function M.setup(opts)
   end
 end
 
+function M.open_template_picker()
+  local function on_choice(choice)
+    if not choice then
+      return
+    end
+
+    M.create_contemplate_win(choice, {})
+  end
+
+  local function format_item(item)
+    return item.display_name
+  end
+
+  local config = M.get_config()
+  local contemplate_entries = M.get_entries(config.include_defaults or true)
+
+  vim.ui.select(contemplate_entries, {
+    prompt = 'Contemplate',
+    format_item = format_item,
+  }, on_choice)
+end
+
+function M.open_history_picker()
+  local function on_choice(choice)
+    if not choice then
+      return
+    end
+
+    vim.cmd('e ' .. choice)
+  end
+
+  local results = {}
+  local history_file_path = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
+  if vim.fn.filereadable(history_file_path) == 0 then
+    vim.fn.system('touch ' .. history_file_path)
+  end
+
+  local history = vim.fn.readfile(history_file_path)
+  for i = 1, #history do
+    table.insert(results, history[#history + 1 - i])
+  end
+
+  vim.ui.select(results, {
+    prompt = 'Contemplate History',
+  }, on_choice)
+end
+
 return M
