@@ -36,7 +36,7 @@ local function open_history(_)
 end
 
 local function clear_history(_)
-  local history_file_path  = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
+  local history_file_path = vim.fn.stdpath('data') .. '/contemplate/contemplate_history.txt'
   vim.fn.delete(history_file_path)
 end
 

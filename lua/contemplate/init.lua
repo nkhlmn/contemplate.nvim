@@ -25,13 +25,13 @@ local utils = require('contemplate.utils')
 ---@field setup function
 local M = {
   entries = {
-    { arg = 'js',   display_name = 'Javascript' },
-    { arg = 'lua',  display_name = 'Lua' },
-    { arg = 'sql',  display_name = 'SQL' },
+    { arg = 'js', display_name = 'Javascript' },
+    { arg = 'lua', display_name = 'Lua' },
+    { arg = 'sql', display_name = 'SQL' },
     { arg = 'json', display_name = 'JSON' },
     { arg = 'html', display_name = 'HTML' },
-    { arg = 'md',   display_name = 'Markdown' },
-    { arg = 'sh',   display_name = 'Shell' },
+    { arg = 'md', display_name = 'Markdown' },
+    { arg = 'sh', display_name = 'Shell' },
   },
   opts = {
     temp_folder = '~/',
