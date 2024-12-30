@@ -99,20 +99,20 @@ end
 ---@param opts ContemplateOpts
 ---@param file_path string
 function M.save_file(opts, file_path)
-    local is_filename = M.is_filename(file_path)
-    local buf = vim.api.nvim_get_current_buf()
-    local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
-    vim.cmd.write()
-    vim.fn.system('mkdir ' .. opts.data_folder)
-    local hist_file_path = opts.data_folder .. 'contemplate_history.txt'
-    local normalized_file_path = vim.uv.fs_realpath(vim.fn.expand(file_path))
-    local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
-    vim.fn.system(cmd)
+  local is_filename = M.is_filename(file_path)
+  local buf = vim.api.nvim_get_current_buf()
+  local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
+  vim.cmd.write()
+  vim.fn.system('mkdir ' .. opts.data_folder)
+  local hist_file_path = opts.data_folder .. 'contemplate_history.txt'
+  local normalized_file_path = vim.uv.fs_realpath(vim.fn.expand(file_path))
+  local cmd = 'echo "' .. normalized_file_path .. '" >> ' .. hist_file_path
+  vim.fn.system(cmd)
 
-    if filetype == 'sh' and not is_filename then
-      -- Make file executable if it's a shell script
-      vim.cmd('!chmod +x ' .. file_path)
-    end
+  if filetype == 'sh' and not is_filename then
+    -- Make file executable if it's a shell script
+    vim.cmd('!chmod +x ' .. file_path)
+  end
 end
 
 ---@param opts ContemplateOpts
